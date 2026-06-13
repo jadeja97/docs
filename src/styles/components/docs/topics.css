@@ -1,0 +1,9 @@
+[data-folder] {
+  @siblings match("[data-folder]") {
+    @space mt-14;
+  }
+}
+
+[data-folder-page] ul {
+  @space pl-5;
+}

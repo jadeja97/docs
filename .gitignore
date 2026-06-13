@@ -1,0 +1,23 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Dependencies
+node_modules
+
+# Environments
+.env
+
+# Testing
+coverage
+
+# Build outputs
+dist
+
+# debug
+npm-debug.log*
+.pnpm-debug.log*
+
+# Typescript
+*.tsbuildinfo
+
+# misc
+.DS_Store

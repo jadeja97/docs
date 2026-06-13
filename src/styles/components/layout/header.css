@@ -1,0 +1,44 @@
+/* ================================================================================================
+	GLOBAL CSS VARIABLES - HEADER
+================================================================================================ */
+
+html {
+  --header: theme(spacing|spacing-14);
+}
+
+/* ================================================================================================
+	HEADER
+================================================================================================ */
+
+.header__wrapper {
+  @layout layer-4;
+  @filter backdrop-blur;
+  @bg color-bg/80;
+  @flex shrink-0;
+  @position is-sticky;
+  @border thick-bottom;
+
+  height: var(--header);
+  top: var(--banner, 0px);
+
+  /* keep this here to increase specificity over `.container` styles */
+  header {
+    @size h-full;
+    @space py-2;
+    @layout is-flex;
+    @flex items-center justify-between;
+  }
+}
+
+/* ================================================================================================
+	HEADER - THEME TOGGLE
+================================================================================================ */
+
+.theme-toggle__content {
+  .theme__label {
+    @text case-capitalize;
+  }
+  .theme__active-icon {
+    @space ml-auto;
+  }
+}

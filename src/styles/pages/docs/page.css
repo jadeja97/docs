@@ -1,0 +1,74 @@
+/* ================================================================================================
+	DOCS CONTENT WRAPPER
+================================================================================================ */
+
+.content__wrapper {
+  /* fill the available space */
+  @flex grow;
+
+  @layout is-flex;
+  @flex flow-col;
+  /*
+		parent is `flex` or `grid`, all childs will be `min-width: auto;`
+		setting `min-width: 0;` will solve the overflow issue.
+	*/
+  @size min-w-0;
+}
+
+/* ================================================================================================
+	DOCS MAIN
+================================================================================================ */
+
+.content__wrapper main {
+  /* fill the available space */
+  @flex grow;
+
+  @layout is-flex overflow-x-hidden;
+  @flex flow-col;
+  @space px-4 pb-8;
+
+  padding-top: var(--main-pt, 0px);
+
+  @screen md {
+    @space px-6;
+  }
+
+  @screen xl {
+    @space mx-8 px-0;
+
+    article {
+      @space px-8;
+    }
+  }
+}
+
+/* ================================================================================================
+	DOCS ARTICLE
+================================================================================================ */
+
+.content__wrapper article {
+  /* fill the available space */
+  @flex grow;
+
+  /* without `pt-1`, h1 outline on top side is not visible */
+  @space pb-8 pt-1;
+  @layout overflow-x-hidden;
+}
+
+.page__neighbours {
+  @space my-6 gap-4;
+  @layout is-flex;
+  @flex flow-col;
+
+  @screen md {
+    @flex flow-row items-center;
+
+    .next-btn {
+      @space ml-auto;
+    }
+  }
+
+  @screen xl {
+    @space px-8;
+  }
+}
