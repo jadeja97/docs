@@ -155,12 +155,9 @@ export interface Link {
   title?: string;
 }
 
-export interface AuthorLink {
-  name: string;
-  link: string;
-  location: string;
-  title: string;
-}
+export type AuthorLink = Omit<Link, "icon"> & {
+  img?: string;
+};
 
 /* ================================================================================================
   APP

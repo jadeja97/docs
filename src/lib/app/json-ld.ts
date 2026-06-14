@@ -22,7 +22,7 @@ export const getAuthorJSON_LD = ({
     jobTitle,
     url: link,
     sameAs: Object.values(socials).map((handle) => {
-      return handle.link;
+      return handle.url;
     }),
     homeLocation: {
       "@type": "Place",
