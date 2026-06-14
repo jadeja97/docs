@@ -86,7 +86,19 @@
 
 .search-result__container {
   @flex grow;
-  @layout overflow-hidden overflow-y-auto scroll-fade-y scroll-fade-size-8;
+  @layout overflow-hidden;
+
+  @screen max-xl {
+    @layout overflow-y-auto;
+    @live scroll-fade-y scroll-fade-size-8;
+  }
+
+  @screen xl {
+    @state hover {
+      @layout overflow-y-auto;
+      @live scroll-fade-y scroll-fade-size-8;
+    }
+  }
 
   /* search result is empty */
   @data is("search-empty") {

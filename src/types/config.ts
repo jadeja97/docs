@@ -1,6 +1,7 @@
 import type { NextMDXOptions } from "@next/mdx";
 import type { MDXComponents } from "mdx/types";
 import type { NextConfig } from "next";
+import type { ShilpConfig } from "shilpcss/types";
 import type { Configuration } from "webpack";
 
 import type { SVGEl, SVGProps } from "@/components/svg";
@@ -31,6 +32,7 @@ export interface DocsConfig {
     HTMLElements?: MDXComponents;
     TSXComponents?: MDXComponents;
   };
+  shilpConfig: ShilpConfig;
   trailingSlash?: boolean;
 
   getNextConfig: (options: { githubPages?: boolean }) => NextConfig;
@@ -66,6 +68,7 @@ export type UserConfig = Omit<DocsConfig, "getNextConfig" | "getWebpackConfig" |
   analytics?: Partial<Analytics>;
   constants: RequiredConstants & OptionalConstants;
   mdxConfig?: NextMDXOptions;
+  shilpConfig?: ShilpConfig;
 };
 
 /* ================================================================================================

@@ -50,9 +50,10 @@
   /* fill the available area */
   @flex grow;
 
-  @layout is-flex overflow-y-auto scroll-fade-y scroll-fade-size-14;
+  @layout is-flex overflow-y-auto;
   @flex flow-col;
   @space py-8;
+  @live scroll-fade-y scroll-fade-size-14;
 }
 
 .toc__wrapper--mobile {
@@ -81,7 +82,8 @@
     height: calc(100vh - var(--header) - var(--banner, 0px));
 
     @state hover {
-      @layout overflow-y-auto scroll-fade-y scroll-fade-size-20;
+      @layout overflow-y-auto;
+      @live scroll-fade-y scroll-fade-size-20;
     }
   }
 }

@@ -1,7 +1,7 @@
 {
   "name": "@jadeja/docs",
   "description": "an opinionated documentation framework",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.0-alpha.2",
   "type": "module",
   "exports": {
     "./styles/*": {
@@ -91,6 +91,7 @@
     "oxfmt": "~0.48.0",
     "oxlint": "~1.65.0",
     "oxlint-tsgolint": "~0.22.1",
+    "shilpcss": "1.0.0-alpha.8",
     "typescript": "^6.0.3",
     "unplugin-dts": "^1.0.2",
     "vite": "^8.0.8"
@@ -101,7 +102,8 @@
     "@next/third-parties": "^16.2.7",
     "next": "^16.2.6",
     "react": "^19.2.7",
-    "react-dom": "^19.2.7"
+    "react-dom": "^19.2.7",
+    "shilpcss": "1.0.0-alpha.8"
   },
   "keywords": [
     "mdx",

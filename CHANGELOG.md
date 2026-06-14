@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.0-alpha.2
+
+### Minor Changes
+
+- feat: add Shilp CSS config
+
 ## 1.0.0-alpha.1
 
 ### Minor Changes
