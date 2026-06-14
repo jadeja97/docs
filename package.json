@@ -1,7 +1,7 @@
 {
   "name": "@jadeja/docs",
   "description": "an opinionated documentation framework",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0-alpha.1",
   "type": "module",
   "exports": {
     "./styles/*": {
@@ -9,39 +9,44 @@
       "default": "./dist/styles/*.css"
     },
     "./components/*": {
-      "types": "./dist/components/*.d.ts",
+      "types": "./dist/src/components/*.d.ts",
       "import": "./dist/components/*.js",
       "default": "./dist/components/*.js"
     },
     "./default-config": {
-      "types": "./dist/conifg/index.d.ts",
+      "types": "./dist/src/conifg/index.d.ts",
       "import": "./dist/config/index.js",
       "default": "./dist/config/index.js"
     },
     "./hooks/*": {
-      "types": "./dist/hooks/*.d.ts",
+      "types": "./dist/src/hooks/*.d.ts",
       "import": "./dist/hooks/*.js",
       "default": "./dist/hooks/*.js"
     },
     "./lib/*": {
-      "types": "./dist/lib/*.d.ts",
+      "types": "./dist/src/lib/*.d.ts",
       "import": "./dist/lib/*.js",
       "default": "./dist/lib/*.js"
     },
     "./markdown/*": {
-      "types": "./dist/markdown/*.d.ts",
+      "types": "./dist/src/markdown/*.d.ts",
       "import": "./dist/markdown/*.js",
       "default": "./dist/markdown/*.js"
     },
     "./scripts/*": {
-      "types": "./dist/scripts/*.d.ts",
+      "types": "./dist/src/scripts/*.d.ts",
       "import": "./dist/scripts/*.js",
       "default": "./dist/scripts/*.js"
     },
     "./types/*": {
-      "types": "./dist/types/*.d.ts",
-      "import": "./dist/types/*.d.ts",
-      "defaut": "./dist/types/*.d.ts"
+      "types": "./dist/src/types/*.d.ts",
+      "import": "./dist/src/types/*.d.ts",
+      "defaut": "./dist/src/types/*.d.ts"
+    },
+    "./*": {
+      "types": "./dist/src/*.d.ts",
+      "import": "./dist/src/*.d.ts",
+      "defaut": "./dist/src/*.d.ts"
     },
     ".": {
       "types": "./dist/main.d.ts",
@@ -58,12 +63,12 @@
     "publish-it": "pnpm build && pnpm publish --tag alpha --access public --no-git-checks"
   },
   "dependencies": {
-    "@jadeja/ts": "1.0.0-alpha.4",
+    "@jadeja/ts": "1.0.0-alpha.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "front-matter": "^4.0.2",
     "github-slugger": "^2.0.0",
-    "gray-matter": "^4.0.3",
+    "js-yaml": "^4.2.0",
     "minisearch": "^7.2.0",
     "next-themes": "^0.4.6",
     "rehype-slug": "^6.0.0",
@@ -72,6 +77,7 @@
     "unist-util-visit": "^5.1.0"
   },
   "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
     "@types/mdast": "^4.0.4",
     "@types/mdx": "^2.0.13",
     "@types/node": "^24.6.2",
@@ -79,14 +85,14 @@
     "@types/react-dom": "^19.2.3",
     "@types/webpack": "^5.28.5",
     "eslint-plugin-react-hooks": "^7.1.1",
-    "glob": "^13.0.6",
+    "glob": "~13.0.6",
     "husky": "^9.1.7",
     "lint-staged": "^17.0.5",
-    "oxfmt": "^0.48.0",
+    "oxfmt": "~0.48.0",
     "oxlint": "~1.65.0",
-    "oxlint-tsgolint": "^0.22.1",
+    "oxlint-tsgolint": "~0.22.1",
     "typescript": "^6.0.3",
-    "unplugin-dts": "^1.0.0",
+    "unplugin-dts": "^1.0.2",
     "vite": "^8.0.8"
   },
   "peerDependencies": {

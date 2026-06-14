@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for your interest in contributing to Docs. Contributions are welcome! 🤗
+Thanks for your interest in contributing to `@jadeja/docs`. Contributions are welcome! 🤗
 
 We appreciate bug reports, feature requests, code improvements, and any other forms of contribution.
 

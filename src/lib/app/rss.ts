@@ -103,6 +103,7 @@ export const generateChannelItem = ({
   publishedAt,
   lastModifiedAt,
 }: GenerateChannelItemOptions) => {
+  //
   return `
 		<item>
 			<title>${escapeXML(title)}</title>

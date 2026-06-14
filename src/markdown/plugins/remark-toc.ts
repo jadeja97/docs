@@ -12,11 +12,14 @@ import type { TOC } from "@/types/content";
  * remark plugin to export table of content (toc) from `.mdx` files
  */
 export const remarkTOC = () => {
+  //
   return (tree: Root) => {
+    //
     const slugger = new GithubSlugger();
     const toc: TOC[] = [];
 
     visit(tree, "heading", (node) => {
+      //
       const text = node.children
         .filter((x) => {
           return x.type === "text";

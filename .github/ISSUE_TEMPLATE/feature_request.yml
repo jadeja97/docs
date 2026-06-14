@@ -1,5 +1,5 @@
 name: "Feature Request"
-description: Suggest a new feature or improvement for Docs
+description: Suggest a new feature or improvement for `@jadeja/docs`
 title: "[feat]: "
 labels: ["enhancement"]
 body:

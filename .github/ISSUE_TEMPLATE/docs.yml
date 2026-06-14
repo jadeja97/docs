@@ -1,5 +1,5 @@
 name: "Documentation"
-description: Suggest a change or new page to be added to Docs
+description: Suggest a change or new page to be added to `@jadeja/docs`
 title: "[docs]: "
 labels: ["documentation"]
 body:

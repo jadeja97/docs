@@ -15,6 +15,7 @@ export const getAuthorJSON_LD = ({
   location,
   socials,
 }: AuthorJSON_LDOptions) => {
+  //
   return {
     "@type": "Person",
     name,
@@ -47,6 +48,7 @@ export const articleJSON_LD = ({
   frontMatter,
   trailingSlash,
 }: ArticleJSON_LDOptions) => {
+  //
   return {
     "@context": "https://schema.org",
     "@type": "Article",
@@ -74,6 +76,7 @@ export const websiteJSON_LD = ({
   appName,
   trailingSlash,
 }: WebsiteJSON_LDOptions) => {
+  //
   return {
     "@context": "https://schema.org",
     "@type": "Website",

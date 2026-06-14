@@ -1,4 +1,3 @@
-import type { PackageVersion } from "@jadeja/ts/types/util";
 import type { NextMDXOptions } from "@next/mdx";
 import type { MDXComponents } from "mdx/types";
 import type { NextConfig } from "next";
@@ -8,13 +7,81 @@ import type { SVGEl, SVGProps } from "@/components/svg";
 
 /* ============================================================================================= */
 
+/* ================================================================================================
+  DEFINE CONFIG
+================================================================================================ */
+
+export type DefineConfig = (userConfig: UserConfig) => DocsConfig;
+
+/* ================================================================================================
+  DOCS CONFIG
+================================================================================================ */
+
+export interface DocsConfig {
+  app: App;
+  authors: Record<string, Author>;
+  analytics?: Analytics;
+  constants: Constants;
+  links: {
+    navigations: Record<string, Link>;
+    socials: Record<string, Link>;
+  };
+  mdxConfig: NextMDXOptions;
+  mdxComponents?: {
+    HTMLElements?: MDXComponents;
+    TSXComponents?: MDXComponents;
+  };
+  trailingSlash?: boolean;
+
+  getNextConfig: (options: { githubPages?: boolean }) => NextConfig;
+
+  getWebpackConfig: (
+    config: Configuration,
+    options: {
+      plugins: Configuration["plugins"];
+      alias:
+        | {
+            /**
+             * new request.
+             */
+            alias: string | false | string[];
+            /**
+             * request to be redirected.
+             */
+            name: string;
+            /**
+             * redirect only exact matching request.
+             */
+          }[]
+        | Record<string, string | false | string[]>;
+    },
+  ) => Configuration;
+}
+
+/* ================================================================================================
+  USER CONFIG
+================================================================================================ */
+
+export type UserConfig = Omit<DocsConfig, "getNextConfig" | "getWebpackConfig" | "constants"> & {
+  analytics?: Partial<Analytics>;
+  constants: RequiredConstants & OptionalConstants;
+  mdxConfig?: NextMDXOptions;
+};
+
+/* ================================================================================================
+  CONSTANTS
+================================================================================================ */
+
+export type RequiredConstants = Pick<Constants, "DEV" | "PROD" | "SITE_URL" | "VERSION">;
+export type OptionalConstants = Partial<Omit<Constants, keyof RequiredConstants>>;
+
 export interface Constants {
   /**
    * version from `package.json`
    *
    * keep this updated to invalidate old search index cache
    */
-  VERSION: PackageVersion | number;
+  VERSION: string;
 
   /**
    * the site url (domain)
@@ -35,7 +102,7 @@ export interface Constants {
    *
    * prod: `${SEARCH_INDEX_KEY}-v-${VERSION}.json`
    */
-  SEARCH_INDEX_FILE_NAME: `${string}-v-${`${number}.${number}.${number}${`-${string}.${number}` | ""}` | ("dev" | number)}.json`;
+  SEARCH_INDEX_FILE_NAME: `${string}-v-${string}.json`;
 
   /**
    * `true` if environment is "development"
@@ -58,6 +125,10 @@ export interface Constants {
   SEARCH_INDEX_RETURN_FIELDS: string[];
 }
 
+/* ================================================================================================
+  ANALYTICS
+================================================================================================ */
+
 export interface Analytics {
   /**
    * google analytics key
@@ -70,35 +141,27 @@ export interface Analytics {
   microsoftClarity?: string;
 }
 
-export type NavLinks = Record<
-  string,
-  {
-    label: string;
-    url: string;
-    icon?: (props: SVGProps) => SVGEl;
-    title?: string;
-  }
->;
+/* ================================================================================================
+  LINKS
+================================================================================================ */
 
-export type SocialLinks = Record<
-  string,
-  {
-    label: string;
-    url: string;
-    icon?: (props: SVGProps) => SVGEl;
-    title?: string;
-  }
->;
+export interface Link {
+  label: string;
+  url: `https://${string}`;
+  icon?: (props: SVGProps) => SVGEl;
+  title?: string;
+}
 
-export type AuthorLinks = Record<
-  string,
-  {
-    name: string;
-    link: string;
-    location: string;
-    title: string;
-  }
->;
+export interface AuthorLink {
+  name: string;
+  link: string;
+  location: string;
+  title: string;
+}
+
+/* ================================================================================================
+  APP
+================================================================================================ */
 
 export interface App {
   name: string;
@@ -135,6 +198,10 @@ export interface App {
   };
 }
 
+/* ================================================================================================
+  AUTHOR
+================================================================================================ */
+
 export interface Author {
   name: string;
   link: `https://${string}`;
@@ -144,62 +211,5 @@ export interface Author {
     creator: `@${string}`;
     creatorId: string;
   };
-  socials: Record<
-    string,
-    {
-      label: string;
-      link: `https://${string}`;
-      icon?: (props: SVGProps) => SVGEl;
-    }
-  >;
+  socials: Record<string, AuthorLink>;
 }
-
-export interface DocsConfig {
-  app: App;
-  authors: Record<string, Author>;
-  analytics?: Analytics;
-  constants: Constants;
-  links: {
-    navigations: NavLinks;
-    socials: SocialLinks;
-  };
-  mdxConfig: NextMDXOptions;
-  mdxComponents?: {
-    HTMLElements?: MDXComponents;
-    TSXComponents?: MDXComponents;
-  };
-  trailingSlash?: boolean;
-
-  getNextConfig: (options: { githubPages?: boolean }) => NextConfig;
-
-  getWebpackConfig: (
-    config: Configuration,
-    options: {
-      plugins: Configuration["plugins"];
-      alias:
-        | {
-            /**
-             * new request.
-             */
-            alias: string | false | string[];
-            /**
-             * request to be redirected.
-             */
-            name: string;
-            /**
-             * redirect only exact matching request.
-             */
-          }[]
-        | Record<string, string | false | string[]>;
-    },
-  ) => Configuration;
-}
-
-export type RequiredConstants = Pick<Constants, "DEV" | "PROD" | "SITE_URL" | "VERSION">;
-export type OptionalConstants = Partial<Omit<Constants, keyof RequiredConstants>>;
-
-export type UserConfig = Omit<DocsConfig, "getNextConfig" | "getWebpackConfig" | "constants"> & {
-  analytics?: Partial<Analytics>;
-  constants: RequiredConstants & OptionalConstants;
-  mdxConfig?: NextMDXOptions;
-};

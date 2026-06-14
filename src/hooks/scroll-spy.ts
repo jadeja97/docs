@@ -21,7 +21,9 @@ export const useScrollSpy = ({ tocIds, scrollContainer, offset }: ScrollSpyOptio
 
   // handle active ids
   const handleActiveIds: IntersectionObserverCallback = (entries) => {
+    //
     startTransition(() => {
+      //
       setActiveIds((prev) => {
         //
         const newIds = [...prev];

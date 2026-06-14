@@ -1,22 +1,22 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+# see https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Dependencies
+# dependencies
 node_modules
 
-# Environments
+# environments
 .env
 
-# Testing
+# testing
 coverage
 
-# Build outputs
+# build outputs
 dist
 
 # debug
 npm-debug.log*
 .pnpm-debug.log*
 
-# Typescript
+# typescript
 *.tsbuildinfo
 
 # misc

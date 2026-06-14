@@ -25,6 +25,7 @@ export const articleOG = ({
   frontMatter,
   trailingSlash,
 }: ArticleOGOptions): Metadata["openGraph"] => {
+  //
   return {
     title: frontMatter.title,
     description: frontMatter.description,
@@ -55,6 +56,7 @@ export const websiteOG = ({
   trailingSlash,
   frontMatter,
 }: WebsiteOGOptions): Metadata["openGraph"] => {
+  //
   return {
     title: frontMatter.title,
     description: frontMatter.description,

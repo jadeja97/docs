@@ -8,7 +8,9 @@ import type { Root } from "mdast";
  * remark plugin to extract code metadata as props
  */
 export const remarkCodeMeta = () => {
+  //
   return (tree: Root) => {
+    //
     visit(tree, "code", (node) => {
       // filter backtick code (``)
       // it doesn't have `lang`

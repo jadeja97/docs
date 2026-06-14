@@ -1,4 +1,4 @@
-# Docs
+# @jadeja/docs
 
 _an opinionated documentation framework_
 
@@ -8,7 +8,7 @@ _an opinionated documentation framework_
 
 ## Documentation
 
-Documentation will be added in future releases.
+ℹ️ Documentation will be added in future releases.
 
 ### See In Action
 
@@ -19,13 +19,13 @@ Documentation will be added in future releases.
 ## Community
 
 For help, discussion, or any other conversation, see
-[Discuss Docs on GitHub](https://github.com/JadejaHQ/docs/discussions)
+[Discuss `@jadeja/docs` on GitHub](https://github.com/JadejaHQ/docs/discussions)
 
 <br />
 
 ## Contributing
 
-If you're interested in contributing to Docs, please read our
+If you're interested in contributing to `@jadeja/docs`, please read our
 [Contributing Guidelines](https://github.com/JadejaHQ/docs/blob/main/CONTRIBUTING.md) **before
 submitting a pull request**.
 

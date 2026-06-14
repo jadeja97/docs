@@ -21,9 +21,5 @@ export const getAuthors = ({ authorsList, authors }: GetAuthorsOptions) => {
     };
   });
 
-  return {
-    owner: currentAuthors[0],
-    authors: currentAuthors,
-    seoRootAuthors,
-  };
+  return { owner: currentAuthors[0], authors: currentAuthors, seoRootAuthors };
 };

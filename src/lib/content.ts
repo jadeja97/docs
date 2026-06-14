@@ -6,8 +6,9 @@ import { cwd } from "node:process";
 
 import { log, throwError } from "@jadeja/ts/lib/logger";
 import { Singleton } from "@jadeja/ts/lib/singleton";
+import { isStr } from "@jadeja/ts/lib/types";
 import frontMatter from "front-matter";
-import grayMatter from "gray-matter";
+import { dump } from "js-yaml";
 
 import { getLastModified } from "@/lib/date-time";
 import { Search } from "@/lib/search";
@@ -237,7 +238,7 @@ export class Content<U extends Record<string, unknown> = {}> {
 
   private createFileMeta({ PATH, parentSlugs, file, reservedIndex = -1 }: CreateFileMetaOptions) {
     // create file metadata
-    const fileFromMeta = typeof file === "string" ? { name: file } : file;
+    const fileFromMeta = isStr(file) ? { name: file } : file;
 
     const slug = fileFromMeta.slug ?? fileFromMeta.name;
 
@@ -379,8 +380,12 @@ export class Content<U extends Record<string, unknown> = {}> {
             lastModifiedAt: fields.lastModifiedAt ?? getLastModified(filePATH),
           });
 
-          const newFileContent = grayMatter.stringify(body, fields);
-          writeFileSync(filePATH, newFileContent, "utf8");
+          // add modified frontmatter back to file (full rewrite)
+          writeFileSync(
+            filePATH,
+            `---\n${dump(fields, { indent: 2, lineWidth: 100 })}---\n\n${body}`,
+            "utf8",
+          );
 
           log(`Frontmatter updated :: ${filePATH}`);
         }

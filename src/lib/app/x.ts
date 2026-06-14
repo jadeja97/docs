@@ -10,6 +10,7 @@ export interface XOptions {
 }
 
 export const x = ({ owner, app, frontMatter }: XOptions) => {
+  //
   return {
     title: frontMatter.title,
     description: frontMatter.description,

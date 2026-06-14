@@ -1,12 +1,18 @@
 # Changelog
 
+## 1.0.0-alpha.1
+
+### Minor Changes
+
+- refactor: distribution related code
+
 ## 1.0.0-alpha.0
 
 शुभारम्भः
 
 ---
 
-**Docs**
+**`@jadeja/docs`**
 
 All notable changes to this project is documented in this file.
 

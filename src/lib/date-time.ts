@@ -3,8 +3,15 @@ import { relative } from "node:path";
 
 /* ============================================================================================= */
 
+/**
+ * get last modified date-time in ISO format from git history (milliseconds removed)
+ *
+ * @param filePath - absolute file path
+ */
 export const getLastModified = (filePath: string): string => {
+  //
   try {
+    // `.git` file path (absolute)
     const repoRoot = execSync("git rev-parse --show-toplevel", { encoding: "utf8" }).trim();
 
     const relativePath = relative(repoRoot, filePath);
@@ -38,7 +45,12 @@ export const getLastModified = (filePath: string): string => {
 
 /* ============================================================================================= */
 
-export const getRecentDateTime = (dateTimes: string[]) => {
+/**
+ * get most recent date-time from the provided list
+ *
+ * @param dateTimes - date times list
+ */
+export const getMostRecentDateTime = (dateTimes: string[]): string => {
   //
   // oxlint-disable-next-line prefer-destructuring
   let recent: string = dateTimes[0];
@@ -59,6 +71,11 @@ export const getRecentDateTime = (dateTimes: string[]) => {
 
 /* ============================================================================================= */
 
-export const removeMilliSeconds = (dateTimeISO: string) => {
+/**
+ * remove milliseconds from the date-time string
+ *
+ * @param dateTimeISO - date-time in ISO string
+ */
+export const removeMilliSeconds = (dateTimeISO: string): string => {
   return `${dateTimeISO.split(".")[0]}Z`.replaceAll(/Z+/g, "Z");
 };

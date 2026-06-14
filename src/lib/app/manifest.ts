@@ -21,6 +21,7 @@ export const createManifest = ({
   description,
   color,
 }: ManifestOptions): MetadataRoute.Manifest => {
+  //
   return {
     name: siteName,
     short_name: siteName,

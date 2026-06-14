@@ -1,16 +1,16 @@
 import { getLastModified, removeMilliSeconds } from "@/lib/date-time";
 import { cleanURL } from "@/lib/dom/utils";
 
+import type { ArrayElementType } from "@jadeja/ts/types/data";
 import type { MetadataRoute } from "next";
 
 import type { Content } from "@/lib/content";
-import type { ArrayElement } from "@/types/utils";
 
 /* ============================================================================================= */
 
-export interface SiteMap extends ArrayElement<MetadataRoute.Sitemap> {
+export interface SiteMap extends ArrayElementType<MetadataRoute.Sitemap> {
   lastModified: string;
-  changeFrequency: ArrayElement<MetadataRoute.Sitemap>["changeFrequency"];
+  changeFrequency: ArrayElementType<MetadataRoute.Sitemap>["changeFrequency"];
   priority: 0 | 0.1 | 0.2 | 0.3 | 0.4 | 0.5 | 0.6 | 0.7 | 0.8 | 0.9 | 1;
 }
 
