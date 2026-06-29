@@ -54,14 +54,27 @@ export const constants: Constants = {
     "title",
     "label",
     "url",
+    "frontMatter.title",
+    "frontMatter.description",
+    "frontMatter.keywords",
     "content",
-    "metaTitle",
-    "metaDescription",
-    "metaKeywords",
   ],
 
   /**
-   * search index result fields
+   * search result query options
    */
-  SEARCH_INDEX_RETURN_FIELDS: ["title", "label", "url", "metaTitle", "metaDescription"],
+  SEARCH_INDEX_QUERY_OPTIONS: {
+    prefix: true,
+    fuzzy: 0.2,
+    combineWith: "and",
+    boost: {
+      "frontMatter.title": 4,
+      "frontMatter.description": 4,
+      "frontMatter.keywords": 4,
+      title: 3,
+      url: 3,
+      label: 2,
+      content: 2,
+    },
+  },
 };

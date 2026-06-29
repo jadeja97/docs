@@ -5,13 +5,15 @@ import { cwd } from "node:process";
 import { Singleton } from "@jadeja/ts/lib/singleton";
 import MiniSearch from "minisearch";
 
+import { getNestedValue } from "@/lib/utils";
+
 import type { DocsConfig } from "@/types/config";
 
 /* ============================================================================================= */
 
 export type CreateSearchInstanceOptions = Pick<
   DocsConfig["constants"],
-  "SEARCH_INDEX_FIELDS" | "SEARCH_INDEX_RETURN_FIELDS" | "SEARCH_INDEX_FILE_NAME"
+  "SEARCH_INDEX_FIELDS" | "SEARCH_INDEX_FILE_NAME" | "SEARCH_INDEX_QUERY_OPTIONS"
 >;
 
 /**
@@ -57,7 +59,7 @@ export class Search {
   private createSearchInstance() {
     return new MiniSearch({
       fields: this.searchOptions.SEARCH_INDEX_FIELDS,
-      storeFields: this.searchOptions.SEARCH_INDEX_RETURN_FIELDS,
+      extractField: getNestedValue,
     });
   }
 
@@ -66,11 +68,7 @@ export class Search {
     this.miniSearchInstance.addAll(documents);
 
     const searchIndexPath = join(cwd(), "public", this.searchOptions.SEARCH_INDEX_FILE_NAME);
-    const serachContent = {
-      index: this.miniSearchInstance.toJSON(),
-      documents,
-    };
 
-    writeFileSync(searchIndexPath, JSON.stringify(serachContent));
+    writeFileSync(searchIndexPath, JSON.stringify(this.miniSearchInstance));
   }
 }

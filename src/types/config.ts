@@ -1,5 +1,6 @@
 import type { NextMDXOptions } from "@next/mdx";
 import type { MDXComponents } from "mdx/types";
+import type { SearchOptions } from "minisearch";
 import type { NextConfig } from "next";
 import type { ShilpConfig } from "shilpcss/types";
 import type { Configuration } from "webpack";
@@ -126,9 +127,9 @@ export interface Constants {
   SEARCH_INDEX_FIELDS: string[];
 
   /**
-   * search index result fields
+   * search index query options
    */
-  SEARCH_INDEX_RETURN_FIELDS: string[];
+  SEARCH_INDEX_QUERY_OPTIONS: SearchOptions;
 }
 
 /* ================================================================================================

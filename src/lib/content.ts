@@ -41,6 +41,7 @@ import type {
  * exposed properties:
  *
  * - `instance.paths`
+ * - `instance.list`
  *
  * exposed methods:
  *
@@ -54,7 +55,7 @@ export class Content<U extends Record<string, unknown> = {}> {
   //
   public paths!: Paths;
   private slugs!: Slugs;
-  private list!: List;
+  public list!: List;
   private tree!: Tree;
   private search!: Search & Singleton;
   private options!: ContentBaseOptions & U;
@@ -433,8 +434,7 @@ export class Content<U extends Record<string, unknown> = {}> {
 	========================= */
 
   private buildSearchIndex() {
-    const documents = [...this.list.values()];
-    this.search.ingestAll(documents);
+    this.search.ingestAll([...this.list.values()]);
   }
 
   /* =========================

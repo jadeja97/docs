@@ -23,6 +23,7 @@ import type { ComponentProps, ReactElement, ReactNode } from "react";
 
 import type { DialogCloseProps } from "@/components/dialog";
 import type { SearchError, SearchQueryResult, UseSearchOptions } from "@/hooks/use-search";
+import type { List as ContentList } from "@/types/content";
 
 /* ============================================================================================= */
 
@@ -48,10 +49,12 @@ export interface SearchRootChildParams {
   handleSearch: (text: string) => void;
   error: SearchError;
   result: SearchQueryResult | undefined;
+  contentList: ContentList;
 }
 
 export type SearchRootProps = {
   children: ReactNode;
+  contentList: ContentList;
 } & UseSearchOptions &
   ComponentProps<"div">;
 
@@ -61,7 +64,8 @@ export const SearchRoot = ({
   DEV,
   SEARCH_INDEX_FIELDS,
   SEARCH_INDEX_FILE_NAME,
-  SEARCH_INDEX_RETURN_FIELDS,
+  SEARCH_INDEX_QUERY_OPTIONS,
+  contentList,
   ...rest
 }: SearchRootProps): ReactElement<HTMLDivElement> => {
   //
@@ -69,7 +73,7 @@ export const SearchRoot = ({
     DEV,
     SEARCH_INDEX_FIELDS,
     SEARCH_INDEX_FILE_NAME,
-    SEARCH_INDEX_RETURN_FIELDS,
+    SEARCH_INDEX_QUERY_OPTIONS,
   });
 
   const [search, setSearch] = useState("");
@@ -89,19 +93,18 @@ export const SearchRoot = ({
     startTransition(() => {
       //
       debounce(() => {
-        const fn = async () => {
+        // oxlint-disable-next-line typescript/no-floating-promises
+        (async () => {
           const queryResult = await query(text);
           setResult(queryResult);
-        };
-        // oxlint-disable-next-line typescript/no-floating-promises
-        fn();
+        })();
       });
     });
   };
 
   return (
     // oxlint-disable-next-line react/jsx-no-constructed-context-values
-    <SearchContext.Provider value={{ search, ready, handleSearch, error, result }}>
+    <SearchContext.Provider value={{ search, ready, handleSearch, error, result, contentList }}>
       <div className={cls("search", className)} {...rest}>
         {children}
       </div>
@@ -111,7 +114,7 @@ export const SearchRoot = ({
 
 /* ============================================================================================= */
 
-export type SearchProps = UseSearchOptions;
+export type SearchProps = UseSearchOptions & { contentList: ContentList };
 
 export const Search = (props: SearchProps): ReturnType<typeof SearchRoot> => {
   return (
@@ -279,8 +282,12 @@ export const SearchResultContainer = ({
   children,
   className,
 }: SearchResultContainerProps): ReactElement<HTMLDivElement> => {
+  const { result } = useSearchContext();
   return (
-    <div className={cls("search-result__container", { "scroll-fade": scrollFade }, className)}>
+    <div
+      className={cls("search-result__container", { "scroll-fade": scrollFade }, className)}
+      data-search-empty={(result?.count ?? 0) === 0 ? true : undefined}
+    >
       {children}
     </div>
   );
@@ -341,21 +348,31 @@ export type SearchResultListProps = ComponentProps<"li">;
 
 export const SearchResultList = (props: SearchResultListProps): ReactElement | null => {
   //
-  const { result } = useSearchContext();
+  const { result, contentList } = useSearchContext();
 
   return (
     // oxlint-disable-next-line react/jsx-no-useless-fragment
     <>
       {result?.data?.map((data) => {
+        //
+        const searchData = contentList.get(Number(data.id));
+
+        if (!searchData?.url) {
+          // oxlint-disable-next-line react/jsx-no-useless-fragment
+          return <></>;
+        }
+
         return (
-          // oxlint-disable-next-line typescript/no-unsafe-assignment
-          <li key={data.id} {...props}>
+          <li key={Number(data.id)} {...props}>
             <DialogClose isWrapper hideFocus>
-              {/* oxlint-disable typescript/no-unsafe-assignment */}
-              <Link href={data.url} title={data.title}>
-                <span className="link__label">{data.metaTitle ?? data.label}</span>
-                <span className="link__url">{data.url}</span>
-                <span className="link__confidence">Confidence: {data.score.toFixed(2)}%</span>
+              <Link href={searchData.url} title={searchData.title}>
+                <span className="link__label">
+                  {searchData.frontMatter.title ?? searchData.label}
+                </span>
+                <span className="link__url">{searchData.url}</span>
+                <span className="link__confidence">
+                  Confidence: {((data.score / result.maxScore) * 100).toFixed(2)}%
+                </span>
               </Link>
             </DialogClose>
           </li>

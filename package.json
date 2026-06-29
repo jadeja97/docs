@@ -1,7 +1,7 @@
 {
   "name": "@jadeja/docs",
   "description": "an opinionated documentation framework",
-  "version": "1.0.0-alpha.8",
+  "version": "1.0.0-alpha.9",
   "type": "module",
   "exports": {
     "./styles/*": {

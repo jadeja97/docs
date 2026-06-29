@@ -1,3 +1,4 @@
+import { throwError } from "@jadeja/ts/lib/logger";
 import { sleep } from "@jadeja/ts/lib/utils";
 import MiniSearch from "minisearch";
 import { useRef, useEffect, useState } from "react";
@@ -17,11 +18,12 @@ export interface SearchQueryResult {
   count: number;
   time: number;
   data: SearchResult[];
+  maxScore: number;
 }
 
 export type UseSearchOptions = Pick<
   DocsConfig["constants"],
-  "DEV" | "SEARCH_INDEX_FILE_NAME" | "SEARCH_INDEX_FIELDS" | "SEARCH_INDEX_RETURN_FIELDS"
+  "DEV" | "SEARCH_INDEX_FILE_NAME" | "SEARCH_INDEX_FIELDS" | "SEARCH_INDEX_QUERY_OPTIONS"
 >;
 
 export type SearchError = {
@@ -36,13 +38,13 @@ export type SearchError = {
  * @param options.DEV - is current environment is "development"
  * @param options.SEARCH_INDEX_FIELDS - fields for search indexing
  * @param options.SEARCH_INDEX_FILE_NAME - file path of indexed search data
- * @param options.SEARCH_INDEX_RETURN_FIELDS - result fields from search index data
+ * @param options.SEARCH_INDEX_QUERY_OPTIONS - search index query options
  */
 export const useSearch = ({
   DEV,
   SEARCH_INDEX_FIELDS,
   SEARCH_INDEX_FILE_NAME,
-  SEARCH_INDEX_RETURN_FIELDS,
+  SEARCH_INDEX_QUERY_OPTIONS,
 }: UseSearchOptions) => {
   //
   const instance = useRef<MiniSearch>(null);
@@ -55,14 +57,14 @@ export const useSearch = ({
   // for production, it will be force cached
   // cache will be auto refreshed when new version is deployed
   // api path: `/${SEARCH_INDEX_KEY}-v-${DEV ? "dev" : packageJSON.version}.json`
-  const initialize = async () => {
+  const initialize = async (): Promise<void> => {
     //
     setSearchError(null);
 
     // abort the previous request if any
     abortController.current?.abort();
 
-    if (instance.current || ready) {
+    if (instance.current || ready || searchError) {
       return;
     }
 
@@ -75,31 +77,31 @@ export const useSearch = ({
         cache: DEV ? "no-store" : "force-cache",
       });
 
+      if (!res.ok) {
+        return throwError("Failed to initialize the search!");
+      }
+
       // oxlint-disable-next-line typescript/no-unsafe-assignment
       const data = await res.json();
 
-      // oxlint-disable-next-line typescript/no-unsafe-member-access
-      instance.current = MiniSearch.loadJS(data.index as AsPlainObject, {
-        fields: SEARCH_INDEX_FIELDS,
-        storeFields: SEARCH_INDEX_RETURN_FIELDS,
-      });
+      instance.current = MiniSearch.loadJS(data as AsPlainObject, { fields: SEARCH_INDEX_FIELDS });
 
       // adding artificial delay
       await sleep(1000);
 
       setReady(true);
-
-      // oxlint-disable-next-line typescript/no-explicit-any
-    } catch (error: any) {
-      // oxlint-disable-next-line typescript/no-unsafe-member-access
-      if (error.name === "AbortError") {
-        return;
-      }
       //
-      setSearchError({
-        message: "Failed to initialize the search!",
-        reason: error,
-      });
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.name === "AbortError") {
+          return;
+        }
+        //
+        setSearchError({
+          message: "Failed to initialize the search!",
+          reason: error,
+        });
+      }
     }
   };
 
@@ -110,26 +112,13 @@ export const useSearch = ({
       //
       const start = performance.now();
 
-      let data: SearchQueryResult["data"] = [];
+      let data: Omit<SearchQueryResult, "maxScore">["data"] = [];
 
       try {
         // adding artificial delay
         await sleep(QUERY_ARTIFICIAL_DELAY);
 
-        data =
-          instance.current?.search(searchQuery, {
-            prefix: true,
-            fuzzy: 0.2,
-            boost: {
-              metaTitle: 4,
-              metaDescription: 4,
-              metaKeywords: 4,
-              title: 3,
-              url: 3,
-              label: 2,
-              content: 2,
-            },
-          }) ?? [];
+        data = instance.current?.search(searchQuery, SEARCH_INDEX_QUERY_OPTIONS) ?? [];
         //
       } catch (error) {
         //
@@ -145,6 +134,11 @@ export const useSearch = ({
         // remove artificial delay
         time: performance.now() - start - QUERY_ARTIFICIAL_DELAY,
         data,
+        maxScore: Math.max(
+          ...data.map((x) => {
+            return x.score;
+          }),
+        ),
       };
     }
 
